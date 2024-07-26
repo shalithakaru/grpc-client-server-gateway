@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"log"
+	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
@@ -19,6 +20,8 @@ func clientLoggingInterceptor(
 	invoker grpc.UnaryInvoker,
 	opts ...grpc.CallOption,
 ) error {
+	start := time.Now()
+
 	// Log the method and the request
 	log.Printf("Method: %s", method)
 
@@ -44,6 +47,7 @@ func clientLoggingInterceptor(
 
 	// Invoke the RPC call
 	err = invoker(ctx, method, req, reply, cc, opts...)
+	log.Printf("Method: %s Duration: %s Error: %v", method, time.Since(start), err)
 
 	// Log the response
 	if msg, ok := reply.(proto.Message); ok {
