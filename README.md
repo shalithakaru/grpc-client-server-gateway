@@ -1,5 +1,5 @@
 Server
-GOWORK=off go run server.go interceptor.go
+GOWORK=off go run server.go server_interceptor.go
 
 Client
 GOWORK=off go run client.go client_interceptor.go
