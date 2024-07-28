@@ -108,3 +108,94 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "chat.proto",
 }
+
+const (
+	ChatServiceTwo_SayHelloViaGateway_FullMethodName = "/chat.ChatServiceTwo/SayHelloViaGateway"
+)
+
+// ChatServiceTwoClient is the client API for ChatServiceTwo service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ChatServiceTwoClient interface {
+	SayHelloViaGateway(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Message, error)
+}
+
+type chatServiceTwoClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewChatServiceTwoClient(cc grpc.ClientConnInterface) ChatServiceTwoClient {
+	return &chatServiceTwoClient{cc}
+}
+
+func (c *chatServiceTwoClient) SayHelloViaGateway(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Message, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Message)
+	err := c.cc.Invoke(ctx, ChatServiceTwo_SayHelloViaGateway_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ChatServiceTwoServer is the server API for ChatServiceTwo service.
+// All implementations must embed UnimplementedChatServiceTwoServer
+// for forward compatibility
+type ChatServiceTwoServer interface {
+	SayHelloViaGateway(context.Context, *Message) (*Message, error)
+	mustEmbedUnimplementedChatServiceTwoServer()
+}
+
+// UnimplementedChatServiceTwoServer must be embedded to have forward compatible implementations.
+type UnimplementedChatServiceTwoServer struct {
+}
+
+func (UnimplementedChatServiceTwoServer) SayHelloViaGateway(context.Context, *Message) (*Message, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SayHelloViaGateway not implemented")
+}
+func (UnimplementedChatServiceTwoServer) mustEmbedUnimplementedChatServiceTwoServer() {}
+
+// UnsafeChatServiceTwoServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ChatServiceTwoServer will
+// result in compilation errors.
+type UnsafeChatServiceTwoServer interface {
+	mustEmbedUnimplementedChatServiceTwoServer()
+}
+
+func RegisterChatServiceTwoServer(s grpc.ServiceRegistrar, srv ChatServiceTwoServer) {
+	s.RegisterService(&ChatServiceTwo_ServiceDesc, srv)
+}
+
+func _ChatServiceTwo_SayHelloViaGateway_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Message)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceTwoServer).SayHelloViaGateway(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatServiceTwo_SayHelloViaGateway_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceTwoServer).SayHelloViaGateway(ctx, req.(*Message))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ChatServiceTwo_ServiceDesc is the grpc.ServiceDesc for ChatServiceTwo service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ChatServiceTwo_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "chat.ChatServiceTwo",
+	HandlerType: (*ChatServiceTwoServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "SayHelloViaGateway",
+			Handler:    _ChatServiceTwo_SayHelloViaGateway_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "chat.proto",
+}

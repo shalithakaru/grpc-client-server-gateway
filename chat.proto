@@ -7,6 +7,16 @@ message Message {
   string body = 1;
 }
 
+import "google/api/annotations.proto";
+
 service ChatService {
   rpc SayHello(Message) returns (Message) {}
+}
+service ChatServiceTwo {
+  rpc SayHelloViaGateway(Message) returns (Message) {
+    option (google.api.http) = {
+      post: "/v1/sayhello"
+      body: "*"
+    };
+  }
 }
