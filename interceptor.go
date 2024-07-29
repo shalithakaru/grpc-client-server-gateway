@@ -7,25 +7,30 @@ import (
 	"time"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/peer"
 	"google.golang.org/protobuf/proto"
 )
 
-// clientLoggingInterceptor is a gRPC client interceptor for logging requests and responses
-func clientLoggingInterceptor(
+// loggingInterceptor is a gRPC server interceptor for logging requests and responses.
+func serverInterceptor(
 	ctx context.Context,
-	method string,
 	req interface{},
-	reply interface{},
-	cc *grpc.ClientConn,
-	invoker grpc.UnaryInvoker,
-	opts ...grpc.CallOption,
-) error {
-	start := time.Now()
+	info *grpc.UnaryServerInfo,
+	handler grpc.UnaryHandler,
+) (interface{}, error) {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		md = metadata.MD{}
+	}
 
-	// Log the method and the request
-	log.Printf("Method: %s", method)
+	p, _ := peer.FromContext(ctx)
 
-	// Serialize the request to log raw bytes
+	log.Printf("Metadata: %v", md)
+	log.Printf("Peer: %v", p)
+
+	log.Printf("Request - Method:%s Peer:%v Metadata:%v", info.FullMethod, p, md)
+
 	if msg, ok := req.(proto.Message); ok {
 		rawRequest, err := proto.Marshal(msg)
 		if err == nil {
@@ -37,7 +42,6 @@ func clientLoggingInterceptor(
 		log.Printf("Request is not a proto.Message: %T", req)
 	}
 
-	// Convert the request to JSON for readability
 	reqJSON, err := json.Marshal(req)
 	if err == nil {
 		log.Printf("Request JSON: %s", reqJSON)
@@ -45,11 +49,48 @@ func clientLoggingInterceptor(
 		log.Printf("Failed to marshal request to JSON: %v", err)
 	}
 
-	// Invoke the RPC call
+	log.Printf("Raw Request: %v", req)
+
+	h, err := handler(ctx, req)
+
+	return h, err
+}
+
+// clientLoggingInterceptor is a gRPC client interceptor for logging requests and responses.
+func clientInterceptor(
+	ctx context.Context,
+	method string,
+	req interface{},
+	reply interface{},
+	cc *grpc.ClientConn,
+	invoker grpc.UnaryInvoker,
+	opts ...grpc.CallOption,
+) error {
+	start := time.Now()
+
+	log.Printf("Method: %s", method)
+
+	if msg, ok := req.(proto.Message); ok {
+		rawRequest, err := proto.Marshal(msg)
+		if err == nil {
+			log.Printf("Serialized Request: %x", rawRequest)
+		} else {
+			log.Printf("Failed to serialize request: %v", err)
+		}
+	} else {
+		log.Printf("Request is not a proto.Message: %T", req)
+	}
+
+	reqJSON, err := json.Marshal(req)
+	if err == nil {
+		log.Printf("Request JSON: %s", reqJSON)
+	} else {
+		log.Printf("Failed to marshal request to JSON: %v", err)
+	}
+
 	err = invoker(ctx, method, req, reply, cc, opts...)
 	log.Printf("Method: %s Duration: %s Error: %v", method, time.Since(start), err)
 
-	// Log the response
 	if msg, ok := reply.(proto.Message); ok {
 		rawResponse, err := proto.Marshal(msg)
 		if err == nil {
@@ -61,7 +102,6 @@ func clientLoggingInterceptor(
 		log.Printf("Response is not a proto.Message: %T", reply)
 	}
 
-	// Convert the response to JSON for readability
 	respJSON, err := json.Marshal(reply)
 	if err == nil {
 		log.Printf("Response JSON: %s", respJSON)

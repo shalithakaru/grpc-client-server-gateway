@@ -34,16 +34,15 @@ func (s *ChatServiceTwoServer) SayHello(ctx context.Context, message *chat.Messa
 }
 
 func main() {
-
 	fmt.Println("Go gRPC Beginners Tutorial!")
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 9000))
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Fatalf("Failed to listen: %v", err)
 	}
 
 	grpcServer := grpc.NewServer(
-		grpc.UnaryInterceptor(loggingInterceptor),
+		grpc.UnaryInterceptor(serverInterceptor),
 	)
 	chat.RegisterChatServiceServer(grpcServer, &ChatServiceServer{})
 	chat.RegisterChatServiceTwoServer(grpcServer, &ChatServiceTwoServer{})

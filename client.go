@@ -10,20 +10,16 @@ import (
 )
 
 func main() {
-
-	var conn *grpc.ClientConn
-	conn, err := grpc.NewClient(":9000", grpc.WithInsecure(), grpc.WithUnaryInterceptor(clientLoggingInterceptor))
+	conn, err := grpc.Dial(":9000", grpc.WithInsecure(), grpc.WithUnaryInterceptor(clientInterceptor))
 	if err != nil {
-		log.Fatalf("did not connect: %s", err)
+		log.Fatalf("Did not connect: %s", err)
 	}
 	defer conn.Close()
 
-	c := chat.NewChatServiceClient(conn)
-
-	response, err := c.SayHello(context.Background(), &chat.Message{Body: "Hello From Client!"})
+	client := chat.NewChatServiceClient(conn)
+	response, err := client.SayHello(context.Background(), &chat.Message{Body: "Hello From Client!"})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
 	log.Printf("Response from server: %s", response.Body)
-
 }

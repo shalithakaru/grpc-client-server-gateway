@@ -30,6 +30,6 @@ func run() error {
 
 func main() {
 	if err := run(); err != nil {
-		log.Fatalf("failed to serve: %s", err)
+		log.Fatalf("Failed to serve: %s", err)
 	}
 }
