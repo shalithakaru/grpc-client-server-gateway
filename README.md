@@ -37,6 +37,16 @@ GOWORK=off go run grpc_gateway.go
 GOWORK=off go run http_gateway.go
 ``` 
 
+### gRPC Gateway HTTP/2
+```bash
+GOWORK=off go run grpc_gateway_http2.go
+``` 
+
+### HTTP Gateway HTTP/2
+```bash
+GOWORK=off go run http_gateway_http2.go
+``` 
+
 ## Test
 
 ### Testing via Gateway
@@ -46,8 +56,10 @@ curl -X POST -k http://localhost:8080/v1/sayhello -d '{"body": "Hello From HTTP/
 
 or 
 ```bash
-GOWORK=off go run client.go interceptor.go --http-gateway # call via HTTP gateway
-GOWORK=off go run client.go interceptor.go --grpc-gateway # call via gRPC gateway
+GOWORK=off go run client.go interceptor.go --http-gateway # call via HTTP gateway that supports HTTP/1.1
+GOWORK=off go run client.go interceptor.go --grpc-gateway # call via gRPC gateway that supports HTTP/1.1
+GOWORK=off go run client.go interceptor.go --http-gateway-http2 # call via HTTP gateway that supports HTTP/2
+GOWORK=off go run client.go interceptor.go --grpc-gateway-http2 # call via gRPC gateway that supports HTTP/2
 GOWORK=off go run client.go interceptor.go # call server directly 
 ```
 
