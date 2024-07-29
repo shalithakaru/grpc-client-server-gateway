@@ -46,7 +46,9 @@ curl -X POST -k http://localhost:8080/v1/sayhello -d '{"body": "Hello From HTTP/
 
 or 
 ```bash
-GOWORK=off go run client.go interceptor.go --http
+GOWORK=off go run client.go interceptor.go --http-gateway # call via HTTP gateway
+GOWORK=off go run client.go interceptor.go --grpc-gateway # call via gRPC gateway
+GOWORK=off go run client.go interceptor.go # call server directly 
 ```
 
 ### Testing via Client
