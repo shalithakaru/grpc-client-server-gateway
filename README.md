@@ -33,6 +33,11 @@ GOWORK=off go run gateway.go
 curl -X POST -k http://localhost:8080/v1/sayhello -d '{"body": "Hello From HTTP/1.1!"}'
 ```
 
+or 
+```bash
+GOWORK=off go run client.go interceptor.go --http
+```
+
 ### Testing via Client
 ```bash
 GOWORK=off go run client.go interceptor.go 
