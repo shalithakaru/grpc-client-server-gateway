@@ -2,7 +2,7 @@
 // source: chat.proto
 
 /*
-Package __ is a reverse proxy.
+Package chat is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
