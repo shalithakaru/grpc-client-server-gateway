@@ -27,9 +27,14 @@ protoc -I. --go_out=chat --go_opt=paths=source_relative --go-grpc_out=chat --go-
 GOWORK=off go run server.go interceptor.go
 ```
 
-### Gayeway HTTP/1.1
+### gRPC Gateway HTTP/1.1
 ```bash
-GOWORK=off go run gateway.go
+GOWORK=off go run grpc_gateway.go
+``` 
+
+### HTTP Gateway HTTP/1.1
+```bash
+GOWORK=off go run http_gateway.go
 ``` 
 
 ## Test
