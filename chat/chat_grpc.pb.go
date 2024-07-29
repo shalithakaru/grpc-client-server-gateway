@@ -110,14 +110,14 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	ChatServiceTwo_SayHelloViaGateway_FullMethodName = "/chat.ChatServiceTwo/SayHelloViaGateway"
+	ChatServiceTwo_SayHello_FullMethodName = "/chat.ChatServiceTwo/SayHello"
 )
 
 // ChatServiceTwoClient is the client API for ChatServiceTwo service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ChatServiceTwoClient interface {
-	SayHelloViaGateway(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Message, error)
+	SayHello(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Message, error)
 }
 
 type chatServiceTwoClient struct {
@@ -128,10 +128,10 @@ func NewChatServiceTwoClient(cc grpc.ClientConnInterface) ChatServiceTwoClient {
 	return &chatServiceTwoClient{cc}
 }
 
-func (c *chatServiceTwoClient) SayHelloViaGateway(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Message, error) {
+func (c *chatServiceTwoClient) SayHello(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Message, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Message)
-	err := c.cc.Invoke(ctx, ChatServiceTwo_SayHelloViaGateway_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, ChatServiceTwo_SayHello_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +142,7 @@ func (c *chatServiceTwoClient) SayHelloViaGateway(ctx context.Context, in *Messa
 // All implementations must embed UnimplementedChatServiceTwoServer
 // for forward compatibility
 type ChatServiceTwoServer interface {
-	SayHelloViaGateway(context.Context, *Message) (*Message, error)
+	SayHello(context.Context, *Message) (*Message, error)
 	mustEmbedUnimplementedChatServiceTwoServer()
 }
 
@@ -150,8 +150,8 @@ type ChatServiceTwoServer interface {
 type UnimplementedChatServiceTwoServer struct {
 }
 
-func (UnimplementedChatServiceTwoServer) SayHelloViaGateway(context.Context, *Message) (*Message, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SayHelloViaGateway not implemented")
+func (UnimplementedChatServiceTwoServer) SayHello(context.Context, *Message) (*Message, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
 }
 func (UnimplementedChatServiceTwoServer) mustEmbedUnimplementedChatServiceTwoServer() {}
 
@@ -166,20 +166,20 @@ func RegisterChatServiceTwoServer(s grpc.ServiceRegistrar, srv ChatServiceTwoSer
 	s.RegisterService(&ChatServiceTwo_ServiceDesc, srv)
 }
 
-func _ChatServiceTwo_SayHelloViaGateway_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ChatServiceTwo_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Message)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ChatServiceTwoServer).SayHelloViaGateway(ctx, in)
+		return srv.(ChatServiceTwoServer).SayHello(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ChatServiceTwo_SayHelloViaGateway_FullMethodName,
+		FullMethod: ChatServiceTwo_SayHello_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServiceTwoServer).SayHelloViaGateway(ctx, req.(*Message))
+		return srv.(ChatServiceTwoServer).SayHello(ctx, req.(*Message))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -192,8 +192,8 @@ var ChatServiceTwo_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ChatServiceTwoServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "SayHelloViaGateway",
-			Handler:    _ChatServiceTwo_SayHelloViaGateway_Handler,
+			MethodName: "SayHello",
+			Handler:    _ChatServiceTwo_SayHello_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

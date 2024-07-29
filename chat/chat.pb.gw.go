@@ -31,7 +31,7 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_ChatServiceTwo_SayHelloViaGateway_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceTwoClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ChatServiceTwo_SayHello_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceTwoClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Message
 	var metadata runtime.ServerMetadata
 
@@ -39,12 +39,12 @@ func request_ChatServiceTwo_SayHelloViaGateway_0(ctx context.Context, marshaler 
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.SayHelloViaGateway(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.SayHello(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_ChatServiceTwo_SayHelloViaGateway_0(ctx context.Context, marshaler runtime.Marshaler, server ChatServiceTwoServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_ChatServiceTwo_SayHello_0(ctx context.Context, marshaler runtime.Marshaler, server ChatServiceTwoServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Message
 	var metadata runtime.ServerMetadata
 
@@ -52,7 +52,7 @@ func local_request_ChatServiceTwo_SayHelloViaGateway_0(ctx context.Context, mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.SayHelloViaGateway(ctx, &protoReq)
+	msg, err := server.SayHello(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -64,7 +64,7 @@ func local_request_ChatServiceTwo_SayHelloViaGateway_0(ctx context.Context, mars
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterChatServiceTwoHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ChatServiceTwoServer) error {
 
-	mux.Handle("POST", pattern_ChatServiceTwo_SayHelloViaGateway_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_ChatServiceTwo_SayHello_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -72,12 +72,12 @@ func RegisterChatServiceTwoHandlerServer(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/chat.ChatServiceTwo/SayHelloViaGateway", runtime.WithHTTPPathPattern("/v1/sayhello"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/chat.ChatServiceTwo/SayHello", runtime.WithHTTPPathPattern("/v1/sayhello"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_ChatServiceTwo_SayHelloViaGateway_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_ChatServiceTwo_SayHello_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -85,7 +85,7 @@ func RegisterChatServiceTwoHandlerServer(ctx context.Context, mux *runtime.Serve
 			return
 		}
 
-		forward_ChatServiceTwo_SayHelloViaGateway_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ChatServiceTwo_SayHello_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -130,25 +130,25 @@ func RegisterChatServiceTwoHandler(ctx context.Context, mux *runtime.ServeMux, c
 // "ChatServiceTwoClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterChatServiceTwoHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ChatServiceTwoClient) error {
 
-	mux.Handle("POST", pattern_ChatServiceTwo_SayHelloViaGateway_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_ChatServiceTwo_SayHello_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat.ChatServiceTwo/SayHelloViaGateway", runtime.WithHTTPPathPattern("/v1/sayhello"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat.ChatServiceTwo/SayHello", runtime.WithHTTPPathPattern("/v1/sayhello"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_ChatServiceTwo_SayHelloViaGateway_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_ChatServiceTwo_SayHello_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_ChatServiceTwo_SayHelloViaGateway_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ChatServiceTwo_SayHello_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -156,9 +156,9 @@ func RegisterChatServiceTwoHandlerClient(ctx context.Context, mux *runtime.Serve
 }
 
 var (
-	pattern_ChatServiceTwo_SayHelloViaGateway_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "sayhello"}, ""))
+	pattern_ChatServiceTwo_SayHello_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "sayhello"}, ""))
 )
 
 var (
-	forward_ChatServiceTwo_SayHelloViaGateway_0 = runtime.ForwardResponseMessage
+	forward_ChatServiceTwo_SayHello_0 = runtime.ForwardResponseMessage
 )
