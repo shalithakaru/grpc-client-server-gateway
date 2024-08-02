@@ -87,11 +87,12 @@ function App() {
         <h1>gRPC-Web with React</h1>
         <button onClick={makeUnaryCall}>Make Unary Call</button>
         <button onClick={makeServerStreamingCall}>Make Server Streaming Call</button>
-        <button onClick={makeClientStreamingCall}>Make Client Streaming Call</button>
-        <button onClick={makeBidirectionalStreamingCall}>Make Bidirectional Streaming Call</button>
+        {/* Please read the README.md why below are not supported yet */}
+        {/* <button onClick={makeClientStreamingCall}>Make Client Streaming Call</button> */}
+        {/* <button onClick={makeBidirectionalStreamingCall}>Make Bidirectional Streaming Call</button> */}
         <p>Unary Response: {response}</p>
         <div>
-          <h2>Stream Responses:</h2>
+          <p>Stream Responses:</p>
           <ul>
             {streamResponses.map((msg, idx) => (
               <li key={idx}>{msg}</li>

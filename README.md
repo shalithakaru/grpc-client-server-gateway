@@ -73,6 +73,11 @@ GOWORK=off go run client/*.go --grpc-gateway-http2 # call via gRPC gateway that 
 GOWORK=off go run client/*.go # call server directly 
 ```
 ### Testing via frontend application
+Please note gRPC-web currently supports 2 RPC modes 
+- Unary RPCs (example)
+- Server-side Streaming RPCs (example) (NOTE: Only when grpcwebtext mode is used.)
+
+Client-side and Bi-directional streaming is not currently supported and you can see chat_pb.js and chat_grpc_web_pb.js doesn't have the impelemntation for it even we try to generate it.
 
 #### Prerequisite 
 1. Node.js
@@ -83,7 +88,7 @@ More information here https://github.com/improbable-eng/grpc-web/blob/master/go/
 git clone https://github.com/improbable-eng/grpc-web.git
 go install ./go/grpcwebproxy
 # Run the proxy. Please note we are running the gRPC server on port 9000
-grpcwebproxy --backend_addr=localhost:9000 --run_tls_server=false
+grpcwebproxy --backend_addr=localhost:9000 --run_tls_server=false --allow_all_origins
 ```
 3. Tools to generate protobuf (This will be installed globally)
 ```
