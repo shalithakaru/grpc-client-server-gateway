@@ -1,33 +1,35 @@
-// Add these imports at the top
-import { grpc } from '@improbable-eng/grpc-web';
-import { HelloRequest, HelloReply } from './grpc/chat_pb';
-import { GreeterClient } from './grpc/chat_grpc_web_pb';
+import React, { useState, useEffect } from 'react';
+import './App.css';
+import { Message } from './grpc/chat_pb';
+import { ChatServiceClient } from './grpc/chat_grpc_web_pb';
+
+const client = new ChatServiceClient('http://localhost:8080', null, null);
 
 function App() {
   const [response, setResponse] = useState('');
   const [streamResponses, setStreamResponses] = useState([]);
 
   const makeUnaryCall = () => {
-    const request = new HelloRequest();
-    request.setName('World');
-
+    const request = new Message();
+    request.setBody('Hello World');
+    
     client.sayHello(request, {}, (err, response) => {
       if (err) {
         console.error(err);
       } else {
-        setResponse(response.getMessage());
+        setResponse(response.getBody());
       }
     });
   };
 
   const makeServerStreamingCall = () => {
-    const request = new HelloRequest();
-    request.setName('World');
+    const request = new Message();
+    request.setBody('Hello World');
 
-    const stream = client.sayHelloStream(request, {});
+    const stream = client.serverStream(request, {});
 
     stream.on('data', (response) => {
-      setStreamResponses((prev) => [...prev, response.getMessage()]);
+      setStreamResponses((prev) => [...prev, response.getBody()]);
     });
 
     stream.on('end', () => {
@@ -39,7 +41,45 @@ function App() {
     });
   };
 
-  // Implement clientStreamingCall and bidirectionalStreamingCall
+  const makeClientStreamingCall = () => {
+    const stream = client.clientStream({}, (err, response) => {
+      if (err) {
+        console.error(err);
+      } else {
+        setResponse(response.getBody());
+      }
+    });
+
+    for (let i = 0; i < 5; i++) {
+      const request = new Message();
+      request.setBody(`Message ${i}`);
+      stream.write(request);
+    }
+    stream.end();
+  };
+
+  const makeBidirectionalStreamingCall = () => {
+    const stream = client.bidirectionalStream({});
+
+    stream.on('data', (response) => {
+      setStreamResponses((prev) => [...prev, response.getBody()]);
+    });
+
+    stream.on('end', () => {
+      console.log('Stream ended.');
+    });
+
+    stream.on('error', (err) => {
+      console.error(err);
+    });
+
+    for (let i = 0; i < 5; i++) {
+      const request = new Message();
+      request.setBody(`Message ${i}`);
+      stream.write(request);
+    }
+    stream.end();
+  };
 
   return (
     <div className="App">
@@ -47,7 +87,8 @@ function App() {
         <h1>gRPC-Web with React</h1>
         <button onClick={makeUnaryCall}>Make Unary Call</button>
         <button onClick={makeServerStreamingCall}>Make Server Streaming Call</button>
-        {/* Add buttons for other calls */}
+        <button onClick={makeClientStreamingCall}>Make Client Streaming Call</button>
+        <button onClick={makeBidirectionalStreamingCall}>Make Bidirectional Streaming Call</button>
         <p>Unary Response: {response}</p>
         <div>
           <h2>Stream Responses:</h2>

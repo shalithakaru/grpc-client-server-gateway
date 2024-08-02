@@ -93,8 +93,18 @@ npm install -g protoc-gen-grpc-web
 4. Generate protobuf for frontend
 ```bash
 protoc -I=. chat.proto \
-  --js_out=import_style=commonjs:./client-web/src/grpc \
+  --js_out=import_style=commonjs,binary:./client-web/src/grpc \
   --grpc-web_out=import_style=commonjs,mode=grpcwebtext:./client-web/src/grpc --proto_path=./googleapis
+
+# please note there's an small issue with the above genearete as it refers 
+# var google_api_annotations_pb in both files and we need to comment it for now.
+# need to find how to properly generate ./google/api/annotations_pb.js later
+```
+
+#### Run client-web application
+```bash
+cd client-web
+npm start
 ```
 
 ## Other
