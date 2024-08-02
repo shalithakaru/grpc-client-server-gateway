@@ -21,7 +21,7 @@ type CallServiceServer struct {
 }
 
 // Unary RPC implementation
-func (s *ChatServiceServer) SayHello(ctx context.Context, message *chat.Message) (*chat.Message, error) {
+func (s *ChatServiceServer) UnaryChat(ctx context.Context, message *chat.Message) (*chat.Message, error) {
 	response := &chat.Message{
 		Body: "Hello From ChatService!",
 	}
@@ -29,7 +29,7 @@ func (s *ChatServiceServer) SayHello(ctx context.Context, message *chat.Message)
 }
 
 // Client streaming RPC implementation
-func (s *ChatServiceServer) ClientStream(stream chat.ChatService_ClientStreamChatServer) error {
+func (s *ChatServiceServer) ClientStreamChat(stream chat.ChatService_ClientStreamChatServer) error {
 	var messages []string
 	for {
 		message, err := stream.Recv()
@@ -48,7 +48,7 @@ func (s *ChatServiceServer) ClientStream(stream chat.ChatService_ClientStreamCha
 }
 
 // Server streaming RPC implementation
-func (s *ChatServiceServer) ServerStream(message *chat.Message, stream chat.ChatService_ServerStreamChatServer) error {
+func (s *ChatServiceServer) ServerStreamChat(message *chat.Message, stream chat.ChatService_ServerStreamChatServer) error {
 	for i := 0; i < 5; i++ {
 		response := &chat.Message{
 			Body: "Message " + message.Body + " number " + fmt.Sprint(i+1),
@@ -61,7 +61,7 @@ func (s *ChatServiceServer) ServerStream(message *chat.Message, stream chat.Chat
 }
 
 // Bidirectional streaming RPC implementation
-func (s *ChatServiceServer) BidirectionalStream(stream chat.ChatService_BidirectionalStreamChatServer) error {
+func (s *ChatServiceServer) BidirectionalStreamChat(stream chat.ChatService_BidirectionalStreamChatServer) error {
 	for {
 		message, err := stream.Recv()
 		if err == io.EOF {
