@@ -24,7 +24,7 @@ protoc -I. --go_out=chat --go-grpc_out=chat --grpc-gateway_out=chat --proto_path
 protoc -I. --go_out=chat --go_opt=paths=source_relative --go-grpc_out=chat --go-grpc_opt=paths=source_relative --grpc-gateway_out=chat --grpc-gateway_opt=logtostderr=true,paths=source_relative --proto_path=./ --proto_path=./googleapis chat.proto
 ```
 
-## Commands
+## How to run the server and test
 
 ### Server
 Run the gRPC server.
@@ -32,25 +32,29 @@ Run the gRPC server.
 GOWORK=off go run server/*.go  
 ```
 
-### gRPC Gateway HTTP/1.1
+### Gateways
+Below gateways were implemented to undestand and explain how gRPC acts under different protocols.
+TODO: Need to add interceptors to explain how HTTP gateways decode serialised requests and responses.
+
+#### gRPC Gateway HTTP/1.1
 Run the gRPC gateway that supports HTTP/1.1.
 ```bash
 GOWORK=off go run gateway/gateway-grpc-http1-1/*.go
 ``` 
 
-### HTTP Gateway HTTP/1.1
+#### HTTP Gateway HTTP/1.1
 Run the HTTP gateway that supports HTTP/1.1.
 ```bash
 GOWORK=off go run gateway/gateway-http-http1-1/*.go
 ``` 
 
-### gRPC Gateway HTTP/2
+#### gRPC Gateway HTTP/2
 Run the gRPC gateway that supports HTTP/2.
 ```bash
 GOWORK=off go run gateway/gateway-grpc-http2/*.go
 ``` 
 
-### HTTP Gateway HTTP/2
+##### HTTP Gateway HTTP/2
 Run the HTTP gateway that supports HTTP/2.
 ```bash
 GOWORK=off go run gateway/gateway-http-http2/*.go
@@ -58,7 +62,7 @@ GOWORK=off go run gateway/gateway-http-http2/*.go
 
 ## Test
 
-### Testing via gateways or server directly
+### Testing via gateways or calling the server directly
 Test the service using the gateway with a curl command.
 ```bash
 curl -X POST -k http://localhost:8080/v1/sayhello -d '{"body": "Hello From HTTP/1.1!"}'
@@ -73,16 +77,17 @@ GOWORK=off go run client/*.go --grpc-gateway-http2 # call via gRPC gateway that 
 GOWORK=off go run client/*.go # call server directly 
 ```
 ### Testing via frontend application
+This frontend application were implemented using React.js to demonstrate how current frontend application can use gPRC based services
+
 Please note gRPC-web currently supports 2 RPC modes 
 - Unary RPCs (example)
 - Server-side Streaming RPCs (example) (NOTE: Only when grpcwebtext mode is used.)
 
-Client-side and Bi-directional streaming is not currently supported and you can see chat_pb.js and chat_grpc_web_pb.js doesn't have the impelemntation for it even we try to generate it.
+`Client-side` and `Bi-directional` streaming is not currently supported and you can see `chat_pb.js` and `chat_grpc_web_pb.j`s` doesn't have the impelemntation for it even we try to generate it.
 
 #### Prerequisite 
-1. Node.js
-2. Revery Proxy
-This is a reverse proxy that can front existing gRPC servers and expose their functionality using gRPC-Web protocol, allowing for the gRPC services to be consumed from browsers.
+1. Node.js (Tested in Node.js `v18.17.1`)
+2. Revery Proxy: This is a reverse proxy that can front existing gRPC servers and expose their functionality using gRPC-Web protocol, allowing for the gRPC services to be consumed from browsers.
 More information here https://github.com/improbable-eng/grpc-web/blob/master/go/grpcwebproxy/README.md 
 ```bash
 git clone https://github.com/improbable-eng/grpc-web.git
