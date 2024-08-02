@@ -22,7 +22,14 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ChatServiceClient interface {
+	// Unary RPC
 	SayHello(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Message, error)
+	// Client streaming RPC
+	ClientStream(ctx context.Context, opts ...grpc.CallOption) (ChatService_ClientStreamClient, error)
+	// Server streaming RPC
+	ServerStream(ctx context.Context, in *Message, opts ...grpc.CallOption) (ChatService_ServerStreamClient, error)
+	// Bidirectional streaming RPC
+	BidirectionalStream(ctx context.Context, opts ...grpc.CallOption) (ChatService_BidirectionalStreamClient, error)
 }
 
 type chatServiceClient struct {
@@ -42,11 +49,115 @@ func (c *chatServiceClient) SayHello(ctx context.Context, in *Message, opts ...g
 	return out, nil
 }
 
+func (c *chatServiceClient) ClientStream(ctx context.Context, opts ...grpc.CallOption) (ChatService_ClientStreamClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[0], "/chat.ChatService/ClientStream", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceClientStreamClient{stream}
+	return x, nil
+}
+
+type ChatService_ClientStreamClient interface {
+	Send(*Message) error
+	CloseAndRecv() (*Message, error)
+	grpc.ClientStream
+}
+
+type chatServiceClientStreamClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceClientStreamClient) Send(m *Message) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *chatServiceClientStreamClient) CloseAndRecv() (*Message, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	m := new(Message)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) ServerStream(ctx context.Context, in *Message, opts ...grpc.CallOption) (ChatService_ServerStreamClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[1], "/chat.ChatService/ServerStream", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceServerStreamClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_ServerStreamClient interface {
+	Recv() (*Message, error)
+	grpc.ClientStream
+}
+
+type chatServiceServerStreamClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceServerStreamClient) Recv() (*Message, error) {
+	m := new(Message)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) BidirectionalStream(ctx context.Context, opts ...grpc.CallOption) (ChatService_BidirectionalStreamClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[2], "/chat.ChatService/BidirectionalStream", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceBidirectionalStreamClient{stream}
+	return x, nil
+}
+
+type ChatService_BidirectionalStreamClient interface {
+	Send(*Message) error
+	Recv() (*Message, error)
+	grpc.ClientStream
+}
+
+type chatServiceBidirectionalStreamClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceBidirectionalStreamClient) Send(m *Message) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *chatServiceBidirectionalStreamClient) Recv() (*Message, error) {
+	m := new(Message)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // ChatServiceServer is the server API for ChatService service.
 // All implementations must embed UnimplementedChatServiceServer
 // for forward compatibility
 type ChatServiceServer interface {
+	// Unary RPC
 	SayHello(context.Context, *Message) (*Message, error)
+	// Client streaming RPC
+	ClientStream(ChatService_ClientStreamServer) error
+	// Server streaming RPC
+	ServerStream(*Message, ChatService_ServerStreamServer) error
+	// Bidirectional streaming RPC
+	BidirectionalStream(ChatService_BidirectionalStreamServer) error
 	mustEmbedUnimplementedChatServiceServer()
 }
 
@@ -56,6 +167,15 @@ type UnimplementedChatServiceServer struct {
 
 func (UnimplementedChatServiceServer) SayHello(context.Context, *Message) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
+}
+func (UnimplementedChatServiceServer) ClientStream(ChatService_ClientStreamServer) error {
+	return status.Errorf(codes.Unimplemented, "method ClientStream not implemented")
+}
+func (UnimplementedChatServiceServer) ServerStream(*Message, ChatService_ServerStreamServer) error {
+	return status.Errorf(codes.Unimplemented, "method ServerStream not implemented")
+}
+func (UnimplementedChatServiceServer) BidirectionalStream(ChatService_BidirectionalStreamServer) error {
+	return status.Errorf(codes.Unimplemented, "method BidirectionalStream not implemented")
 }
 func (UnimplementedChatServiceServer) mustEmbedUnimplementedChatServiceServer() {}
 
@@ -88,6 +208,79 @@ func _ChatService_SayHello_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ChatService_ClientStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(ChatServiceServer).ClientStream(&chatServiceClientStreamServer{stream})
+}
+
+type ChatService_ClientStreamServer interface {
+	SendAndClose(*Message) error
+	Recv() (*Message, error)
+	grpc.ServerStream
+}
+
+type chatServiceClientStreamServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceClientStreamServer) SendAndClose(m *Message) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *chatServiceClientStreamServer) Recv() (*Message, error) {
+	m := new(Message)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func _ChatService_ServerStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(Message)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).ServerStream(m, &chatServiceServerStreamServer{stream})
+}
+
+type ChatService_ServerStreamServer interface {
+	Send(*Message) error
+	grpc.ServerStream
+}
+
+type chatServiceServerStreamServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceServerStreamServer) Send(m *Message) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_BidirectionalStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(ChatServiceServer).BidirectionalStream(&chatServiceBidirectionalStreamServer{stream})
+}
+
+type ChatService_BidirectionalStreamServer interface {
+	Send(*Message) error
+	Recv() (*Message, error)
+	grpc.ServerStream
+}
+
+type chatServiceBidirectionalStreamServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceBidirectionalStreamServer) Send(m *Message) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *chatServiceBidirectionalStreamServer) Recv() (*Message, error) {
+	m := new(Message)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // ChatService_ServiceDesc is the grpc.ServiceDesc for ChatService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -100,7 +293,24 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ChatService_SayHello_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "ClientStream",
+			Handler:       _ChatService_ClientStream_Handler,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "ServerStream",
+			Handler:       _ChatService_ServerStream_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "BidirectionalStream",
+			Handler:       _ChatService_BidirectionalStream_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+	},
 	Metadata: "chat.proto",
 }
 
