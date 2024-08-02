@@ -36,7 +36,7 @@ func handleSayHello(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
-	client := chat.NewChatServiceClient(conn)
+	client := chat.NewCallServiceClient(conn)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()

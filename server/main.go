@@ -16,8 +16,8 @@ type ChatServiceServer struct {
 	chat.UnimplementedChatServiceServer
 }
 
-type ChatServiceTwoServer struct {
-	chat.UnimplementedChatServiceTwoServer
+type CallServiceServer struct {
+	chat.UnimplementedCallServiceServer
 }
 
 // Unary RPC implementation
@@ -29,7 +29,7 @@ func (s *ChatServiceServer) SayHello(ctx context.Context, message *chat.Message)
 }
 
 // Client streaming RPC implementation
-func (s *ChatServiceServer) ClientStream(stream chat.ChatService_ClientStreamServer) error {
+func (s *ChatServiceServer) ClientStream(stream chat.ChatService_ClientStreamChatServer) error {
 	var messages []string
 	for {
 		message, err := stream.Recv()
@@ -48,7 +48,7 @@ func (s *ChatServiceServer) ClientStream(stream chat.ChatService_ClientStreamSer
 }
 
 // Server streaming RPC implementation
-func (s *ChatServiceServer) ServerStream(message *chat.Message, stream chat.ChatService_ServerStreamServer) error {
+func (s *ChatServiceServer) ServerStream(message *chat.Message, stream chat.ChatService_ServerStreamChatServer) error {
 	for i := 0; i < 5; i++ {
 		response := &chat.Message{
 			Body: "Message " + message.Body + " number " + fmt.Sprint(i+1),
@@ -61,7 +61,7 @@ func (s *ChatServiceServer) ServerStream(message *chat.Message, stream chat.Chat
 }
 
 // Bidirectional streaming RPC implementation
-func (s *ChatServiceServer) BidirectionalStream(stream chat.ChatService_BidirectionalStreamServer) error {
+func (s *ChatServiceServer) BidirectionalStream(stream chat.ChatService_BidirectionalStreamChatServer) error {
 	for {
 		message, err := stream.Recv()
 		if err == io.EOF {
@@ -88,7 +88,7 @@ func joinMessages(messages []string) string {
 	return result
 }
 
-func (s *ChatServiceTwoServer) SayHello(ctx context.Context, message *chat.Message) (*chat.Message, error) {
+func (s *CallServiceServer) SayHello(ctx context.Context, message *chat.Message) (*chat.Message, error) {
 	response := &chat.Message{
 		Body: "Hello From ChatServiceTwo!",
 	}
@@ -107,7 +107,7 @@ func main() {
 		grpc.UnaryInterceptor(serverInterceptor),
 	)
 	chat.RegisterChatServiceServer(grpcServer, &ChatServiceServer{})
-	chat.RegisterChatServiceTwoServer(grpcServer, &ChatServiceTwoServer{})
+	chat.RegisterCallServiceServer(grpcServer, &CallServiceServer{})
 
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %s", err)

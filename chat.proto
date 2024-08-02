@@ -11,19 +11,20 @@ import "google/api/annotations.proto";
 
 service ChatService {
   // Unary RPC
-  rpc SayHello (Message) returns (Message) {}
+  rpc UnaryChat (Message) returns (Message) {}
 
   // Client streaming RPC
-  rpc ClientStream (stream Message) returns (Message) {}
+  rpc ClientStreamChat (stream Message) returns (Message) {}
 
   // Server streaming RPC
-  rpc ServerStream (Message) returns (stream Message) {}
+  rpc ServerStreamChat (Message) returns (stream Message) {}
 
   // Bidirectional streaming RPC
-  rpc BidirectionalStream (stream Message) returns (stream Message) {}
+  rpc BidirectionalStreamChat (stream Message) returns (stream Message) {}
 }
 
-service ChatServiceTwo {
+service CallService {
+  // Unary RPC
   rpc SayHello(Message) returns (Message) {
     option (google.api.http) = {
       post: "/v1/sayhello"

@@ -31,7 +31,7 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_ChatServiceTwo_SayHello_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceTwoClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_CallService_SayHello_0(ctx context.Context, marshaler runtime.Marshaler, client CallServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Message
 	var metadata runtime.ServerMetadata
 
@@ -44,7 +44,7 @@ func request_ChatServiceTwo_SayHello_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func local_request_ChatServiceTwo_SayHello_0(ctx context.Context, marshaler runtime.Marshaler, server ChatServiceTwoServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_CallService_SayHello_0(ctx context.Context, marshaler runtime.Marshaler, server CallServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Message
 	var metadata runtime.ServerMetadata
 
@@ -57,14 +57,14 @@ func local_request_ChatServiceTwo_SayHello_0(ctx context.Context, marshaler runt
 
 }
 
-// RegisterChatServiceTwoHandlerServer registers the http handlers for service ChatServiceTwo to "mux".
-// UnaryRPC     :call ChatServiceTwoServer directly.
+// RegisterCallServiceHandlerServer registers the http handlers for service CallService to "mux".
+// UnaryRPC     :call CallServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterChatServiceTwoHandlerFromEndpoint instead.
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterCallServiceHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
-func RegisterChatServiceTwoHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ChatServiceTwoServer) error {
+func RegisterCallServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server CallServiceServer) error {
 
-	mux.Handle("POST", pattern_ChatServiceTwo_SayHello_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_CallService_SayHello_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -72,12 +72,12 @@ func RegisterChatServiceTwoHandlerServer(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/chat.ChatServiceTwo/SayHello", runtime.WithHTTPPathPattern("/v1/sayhello"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/chat.CallService/SayHello", runtime.WithHTTPPathPattern("/v1/sayhello"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_ChatServiceTwo_SayHello_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_CallService_SayHello_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -85,16 +85,16 @@ func RegisterChatServiceTwoHandlerServer(ctx context.Context, mux *runtime.Serve
 			return
 		}
 
-		forward_ChatServiceTwo_SayHello_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_CallService_SayHello_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
 	return nil
 }
 
-// RegisterChatServiceTwoHandlerFromEndpoint is same as RegisterChatServiceTwoHandler but
+// RegisterCallServiceHandlerFromEndpoint is same as RegisterCallServiceHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterChatServiceTwoHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterCallServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.NewClient(endpoint, opts...)
 	if err != nil {
 		return err
@@ -114,41 +114,41 @@ func RegisterChatServiceTwoHandlerFromEndpoint(ctx context.Context, mux *runtime
 		}()
 	}()
 
-	return RegisterChatServiceTwoHandler(ctx, mux, conn)
+	return RegisterCallServiceHandler(ctx, mux, conn)
 }
 
-// RegisterChatServiceTwoHandler registers the http handlers for service ChatServiceTwo to "mux".
+// RegisterCallServiceHandler registers the http handlers for service CallService to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterChatServiceTwoHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterChatServiceTwoHandlerClient(ctx, mux, NewChatServiceTwoClient(conn))
+func RegisterCallServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterCallServiceHandlerClient(ctx, mux, NewCallServiceClient(conn))
 }
 
-// RegisterChatServiceTwoHandlerClient registers the http handlers for service ChatServiceTwo
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "ChatServiceTwoClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "ChatServiceTwoClient"
+// RegisterCallServiceHandlerClient registers the http handlers for service CallService
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "CallServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "CallServiceClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "ChatServiceTwoClient" to call the correct interceptors. This client ignores the HTTP middlewares.
-func RegisterChatServiceTwoHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ChatServiceTwoClient) error {
+// "CallServiceClient" to call the correct interceptors. This client ignores the HTTP middlewares.
+func RegisterCallServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client CallServiceClient) error {
 
-	mux.Handle("POST", pattern_ChatServiceTwo_SayHello_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_CallService_SayHello_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat.ChatServiceTwo/SayHello", runtime.WithHTTPPathPattern("/v1/sayhello"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat.CallService/SayHello", runtime.WithHTTPPathPattern("/v1/sayhello"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_ChatServiceTwo_SayHello_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_CallService_SayHello_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_ChatServiceTwo_SayHello_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_CallService_SayHello_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -156,9 +156,9 @@ func RegisterChatServiceTwoHandlerClient(ctx context.Context, mux *runtime.Serve
 }
 
 var (
-	pattern_ChatServiceTwo_SayHello_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "sayhello"}, ""))
+	pattern_CallService_SayHello_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "sayhello"}, ""))
 )
 
 var (
-	forward_ChatServiceTwo_SayHello_0 = runtime.ForwardResponseMessage
+	forward_CallService_SayHello_0 = runtime.ForwardResponseMessage
 )

@@ -20,7 +20,7 @@ func run() error {
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 
-	err := chat.RegisterChatServiceTwoHandlerFromEndpoint(ctx, mux, "localhost:9000", opts)
+	err := chat.RegisterCallServiceHandlerFromEndpoint(ctx, mux, "localhost:9000", opts)
 	if err != nil {
 		return err
 	}

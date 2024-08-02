@@ -82,8 +82,8 @@ proto.chat.ChatServicePromiseClient =
  *   !proto.chat.Message,
  *   !proto.chat.Message>}
  */
-const methodDescriptor_ChatService_SayHello = new grpc.web.MethodDescriptor(
-  '/chat.ChatService/SayHello',
+const methodDescriptor_ChatService_UnaryChat = new grpc.web.MethodDescriptor(
+  '/chat.ChatService/UnaryChat',
   grpc.web.MethodType.UNARY,
   proto.chat.Message,
   proto.chat.Message,
@@ -108,13 +108,13 @@ const methodDescriptor_ChatService_SayHello = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.chat.Message>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.chat.ChatServiceClient.prototype.sayHello =
+proto.chat.ChatServiceClient.prototype.unaryChat =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/chat.ChatService/SayHello',
+      '/chat.ChatService/UnaryChat',
       request,
       metadata || {},
-      methodDescriptor_ChatService_SayHello,
+      methodDescriptor_ChatService_UnaryChat,
       callback);
 };
 
@@ -127,13 +127,13 @@ proto.chat.ChatServiceClient.prototype.sayHello =
  * @return {!Promise<!proto.chat.Message>}
  *     Promise that resolves to the response
  */
-proto.chat.ChatServicePromiseClient.prototype.sayHello =
+proto.chat.ChatServicePromiseClient.prototype.unaryChat =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/chat.ChatService/SayHello',
+      '/chat.ChatService/UnaryChat',
       request,
       metadata || {},
-      methodDescriptor_ChatService_SayHello);
+      methodDescriptor_ChatService_UnaryChat);
 };
 
 
@@ -143,8 +143,8 @@ proto.chat.ChatServicePromiseClient.prototype.sayHello =
  *   !proto.chat.Message,
  *   !proto.chat.Message>}
  */
-const methodDescriptor_ChatService_ServerStream = new grpc.web.MethodDescriptor(
-  '/chat.ChatService/ServerStream',
+const methodDescriptor_ChatService_ServerStreamChat = new grpc.web.MethodDescriptor(
+  '/chat.ChatService/ServerStreamChat',
   grpc.web.MethodType.SERVER_STREAMING,
   proto.chat.Message,
   proto.chat.Message,
@@ -166,13 +166,13 @@ const methodDescriptor_ChatService_ServerStream = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.chat.Message>}
  *     The XHR Node Readable Stream
  */
-proto.chat.ChatServiceClient.prototype.serverStream =
+proto.chat.ChatServiceClient.prototype.serverStreamChat =
     function(request, metadata) {
   return this.client_.serverStreaming(this.hostname_ +
-      '/chat.ChatService/ServerStream',
+      '/chat.ChatService/ServerStreamChat',
       request,
       metadata || {},
-      methodDescriptor_ChatService_ServerStream);
+      methodDescriptor_ChatService_ServerStreamChat);
 };
 
 
@@ -183,13 +183,13 @@ proto.chat.ChatServiceClient.prototype.serverStream =
  * @return {!grpc.web.ClientReadableStream<!proto.chat.Message>}
  *     The XHR Node Readable Stream
  */
-proto.chat.ChatServicePromiseClient.prototype.serverStream =
+proto.chat.ChatServicePromiseClient.prototype.serverStreamChat =
     function(request, metadata) {
   return this.client_.serverStreaming(this.hostname_ +
-      '/chat.ChatService/ServerStream',
+      '/chat.ChatService/ServerStreamChat',
       request,
       metadata || {},
-      methodDescriptor_ChatService_ServerStream);
+      methodDescriptor_ChatService_ServerStreamChat);
 };
 
 
@@ -201,7 +201,7 @@ proto.chat.ChatServicePromiseClient.prototype.serverStream =
  * @struct
  * @final
  */
-proto.chat.ChatServiceTwoClient =
+proto.chat.CallServiceClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
   options.format = 'text';
@@ -227,7 +227,7 @@ proto.chat.ChatServiceTwoClient =
  * @struct
  * @final
  */
-proto.chat.ChatServiceTwoPromiseClient =
+proto.chat.CallServicePromiseClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
   options.format = 'text';
@@ -251,8 +251,8 @@ proto.chat.ChatServiceTwoPromiseClient =
  *   !proto.chat.Message,
  *   !proto.chat.Message>}
  */
-const methodDescriptor_ChatServiceTwo_SayHello = new grpc.web.MethodDescriptor(
-  '/chat.ChatServiceTwo/SayHello',
+const methodDescriptor_CallService_SayHello = new grpc.web.MethodDescriptor(
+  '/chat.CallService/SayHello',
   grpc.web.MethodType.UNARY,
   proto.chat.Message,
   proto.chat.Message,
@@ -277,13 +277,13 @@ const methodDescriptor_ChatServiceTwo_SayHello = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.chat.Message>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.chat.ChatServiceTwoClient.prototype.sayHello =
+proto.chat.CallServiceClient.prototype.sayHello =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/chat.ChatServiceTwo/SayHello',
+      '/chat.CallService/SayHello',
       request,
       metadata || {},
-      methodDescriptor_ChatServiceTwo_SayHello,
+      methodDescriptor_CallService_SayHello,
       callback);
 };
 
@@ -296,13 +296,13 @@ proto.chat.ChatServiceTwoClient.prototype.sayHello =
  * @return {!Promise<!proto.chat.Message>}
  *     Promise that resolves to the response
  */
-proto.chat.ChatServiceTwoPromiseClient.prototype.sayHello =
+proto.chat.CallServicePromiseClient.prototype.sayHello =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/chat.ChatServiceTwo/SayHello',
+      '/chat.CallService/SayHello',
       request,
       metadata || {},
-      methodDescriptor_ChatServiceTwo_SayHello);
+      methodDescriptor_CallService_SayHello);
 };
 
 
