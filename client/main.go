@@ -17,9 +17,9 @@ import (
 )
 
 // These will call the server directly
-func callSayHello(client chat.ChatServiceClient) {
+func callUnary(client chat.ChatServiceClient) {
 	message := &chat.Message{Body: "Hello From Client!"}
-	response, err := client.SayHello(context.Background(), message)
+	response, err := client.UnaryChat(context.Background(), message)
 	if err != nil {
 		log.Fatalf("Error calling SayHello: %v", err)
 	}
@@ -27,7 +27,7 @@ func callSayHello(client chat.ChatServiceClient) {
 }
 
 func callClientStream(client chat.ChatServiceClient) {
-	stream, err := client.ClientStream(context.Background())
+	stream, err := client.ClientStreamChat(context.Background())
 	if err != nil {
 		log.Fatalf("Error creating stream: %v", err)
 	}
@@ -51,7 +51,7 @@ func callClientStream(client chat.ChatServiceClient) {
 
 func callServerStream(client chat.ChatServiceClient) {
 	message := &chat.Message{Body: "Hello From Client!"}
-	stream, err := client.ServerStream(context.Background(), message)
+	stream, err := client.ServerStreamChat(context.Background(), message)
 	if err != nil {
 		log.Fatalf("Error calling ServerStream: %v", err)
 	}
@@ -69,7 +69,7 @@ func callServerStream(client chat.ChatServiceClient) {
 }
 
 func callBidirectionalStream(client chat.ChatServiceClient) {
-	stream, err := client.BidirectionalStream(context.Background())
+	stream, err := client.BidirectionalStreamChat(context.Background())
 	if err != nil {
 		log.Fatalf("Error creating stream: %v", err)
 	}
@@ -117,7 +117,7 @@ func callServerDirectlyAllServices() {
 	client := chat.NewChatServiceClient(conn)
 
 	log.Println("Calling unary SayHello...")
-	callSayHello(client)
+	callUnary(client)
 
 	log.Println("Calling client streaming ClientStream...")
 	callClientStream(client)
@@ -137,7 +137,7 @@ func callServerDirectly() {
 	defer conn.Close()
 
 	client := chat.NewChatServiceClient(conn)
-	response, err := client.SayHello(context.Background(), &chat.Message{Body: "Hello From Client!"})
+	response, err := client.UnaryChat(context.Background(), &chat.Message{Body: "Hello From Client!"})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
