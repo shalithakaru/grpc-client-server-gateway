@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"time"
@@ -14,6 +15,119 @@ import (
 
 	"grpc-post-body-test/chat"
 )
+
+// These will call the server directly
+func callSayHello(client chat.ChatServiceClient) {
+	message := &chat.Message{Body: "Hello From Client!"}
+	response, err := client.SayHello(context.Background(), message)
+	if err != nil {
+		log.Fatalf("Error calling SayHello: %v", err)
+	}
+	log.Printf("Response from server: %s", response.Body)
+}
+
+func callClientStream(client chat.ChatServiceClient) {
+	stream, err := client.ClientStream(context.Background())
+	if err != nil {
+		log.Fatalf("Error creating stream: %v", err)
+	}
+
+	messages := []string{"First message", "Second message", "Third message"}
+
+	for _, msg := range messages {
+		err := stream.Send(&chat.Message{Body: msg})
+		if err != nil {
+			log.Fatalf("Error sending message: %v", err)
+		}
+	}
+
+	response, err := stream.CloseAndRecv()
+	if err != nil {
+		log.Fatalf("Error receiving response: %v", err)
+	}
+
+	log.Printf("Response from server: %s", response.Body)
+}
+
+func callServerStream(client chat.ChatServiceClient) {
+	message := &chat.Message{Body: "Hello From Client!"}
+	stream, err := client.ServerStream(context.Background(), message)
+	if err != nil {
+		log.Fatalf("Error calling ServerStream: %v", err)
+	}
+
+	for {
+		response, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalf("Error receiving response: %v", err)
+		}
+		log.Printf("Response from server: %s", response.Body)
+	}
+}
+
+func callBidirectionalStream(client chat.ChatServiceClient) {
+	stream, err := client.BidirectionalStream(context.Background())
+	if err != nil {
+		log.Fatalf("Error creating stream: %v", err)
+	}
+
+	messages := []string{"First message", "Second message", "Third message"}
+
+	waitc := make(chan struct{})
+
+	// Send messages
+	go func() {
+		for _, msg := range messages {
+			if err := stream.Send(&chat.Message{Body: msg}); err != nil {
+				log.Fatalf("Error sending message: %v", err)
+			}
+			time.Sleep(1 * time.Second)
+		}
+		stream.CloseSend()
+	}()
+
+	// Receive messages
+	go func() {
+		for {
+			response, err := stream.Recv()
+			if err == io.EOF {
+				break
+			}
+			if err != nil {
+				log.Fatalf("Error receiving response: %v", err)
+			}
+			log.Printf("Response from server: %s", response.Body)
+		}
+		close(waitc)
+	}()
+
+	<-waitc
+}
+
+func callServerDirectlyAllServices() {
+	conn, err := grpc.Dial(":9000", grpc.WithInsecure(), grpc.WithUnaryInterceptor(clientInterceptor))
+	if err != nil {
+		log.Fatalf("Did not connect: %v", err)
+	}
+	defer conn.Close()
+
+	client := chat.NewChatServiceClient(conn)
+
+	log.Println("Calling unary SayHello...")
+	callSayHello(client)
+
+	log.Println("Calling client streaming ClientStream...")
+	callClientStream(client)
+
+	log.Println("Calling server streaming ServerStream...")
+	callServerStream(client)
+
+	log.Println("Calling bidirectional streaming BidirectionalStream...")
+	callBidirectionalStream(client)
+}
 
 func callServerDirectly() {
 	conn, err := grpc.Dial(":9000", grpc.WithInsecure(), grpc.WithUnaryInterceptor(clientInterceptor))
@@ -224,7 +338,7 @@ func main() {
 	} else if *useGRPCGatewayHTTP2 {
 		callGRPCGatewayHTTP2()
 	} else {
-
-		callServerDirectly()
+		// callServerDirectly()
+		callServerDirectlyAllServices()
 	}
 }

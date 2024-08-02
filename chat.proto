@@ -10,8 +10,6 @@ message Message {
 import "google/api/annotations.proto";
 
 service ChatService {
-  //rpc SayHello(Message) returns (Message) {}
-
   // Unary RPC
   rpc SayHello (Message) returns (Message) {}
 
