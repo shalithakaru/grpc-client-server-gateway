@@ -42,7 +42,7 @@ function App() {
   };
 
   const makeClientStreamingCall = () => {
-    const stream = client.clientStream({}, (err, response) => {
+    const stream = client.clientStreamChat({}, (err, response) => {
       if (err) {
         console.error(err);
       } else {
@@ -59,7 +59,7 @@ function App() {
   };
 
   const makeBidirectionalStreamingCall = () => {
-    const stream = client.bidirectionalStream({});
+    const stream = client.bidirectionalStreamChat({});
 
     stream.on('data', (response) => {
       setStreamResponses((prev) => [...prev, response.getBody()]);
