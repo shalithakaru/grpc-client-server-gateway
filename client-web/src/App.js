@@ -13,7 +13,7 @@ function App() {
     const request = new Message();
     request.setBody('Hello World');
     
-    client.sayHello(request, {}, (err, response) => {
+    client.unaryChat(request, {}, (err, response) => {
       if (err) {
         console.error(err);
       } else {
@@ -26,7 +26,7 @@ function App() {
     const request = new Message();
     request.setBody('Hello World');
 
-    const stream = client.serverStream(request, {});
+    const stream = client.serverStreamChat(request, {});
 
     stream.on('data', (response) => {
       setStreamResponses((prev) => [...prev, response.getBody()]);
