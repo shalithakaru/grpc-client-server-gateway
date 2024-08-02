@@ -58,7 +58,7 @@ GOWORK=off go run gateway/gateway-http-http2/*.go
 
 ## Test
 
-### Testing via Gateway
+### Testing via gateways or server directly
 Test the service using the gateway with a curl command.
 ```bash
 curl -X POST -k http://localhost:8080/v1/sayhello -d '{"body": "Hello From HTTP/1.1!"}'
@@ -71,6 +71,17 @@ GOWORK=off go run client/*.go --grpc-gateway # call via gRPC gateway that suppor
 GOWORK=off go run client/*.go --http-gateway-http2 # call via HTTP gateway that supports HTTP/2
 GOWORK=off go run client/*.go --grpc-gateway-http2 # call via gRPC gateway that supports HTTP/2
 GOWORK=off go run client/*.go # call server directly 
+```
+### Testing via frontend application
+
+#### Prerequisite 
+This is a reverse proxy that can front existing gRPC servers and expose their functionality using gRPC-Web protocol, allowing for the gRPC services to be consumed from browsers.
+More information here https://github.com/improbable-eng/grpc-web/blob/master/go/grpcwebproxy/README.md 
+```bash
+git clone https://github.com/improbable-eng/grpc-web.git
+go install ./go/grpcwebproxy
+# Run the proxy. Please note we are running the gRPC server on port 9000
+grpcwebproxy --backend_addr=localhost:9000 --run_tls_server=false
 ```
 
 ## Other
