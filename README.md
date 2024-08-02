@@ -75,6 +75,8 @@ GOWORK=off go run client/*.go # call server directly
 ### Testing via frontend application
 
 #### Prerequisite 
+1. Node.js
+2. Revery Proxy
 This is a reverse proxy that can front existing gRPC servers and expose their functionality using gRPC-Web protocol, allowing for the gRPC services to be consumed from browsers.
 More information here https://github.com/improbable-eng/grpc-web/blob/master/go/grpcwebproxy/README.md 
 ```bash
@@ -82,6 +84,17 @@ git clone https://github.com/improbable-eng/grpc-web.git
 go install ./go/grpcwebproxy
 # Run the proxy. Please note we are running the gRPC server on port 9000
 grpcwebproxy --backend_addr=localhost:9000 --run_tls_server=false
+```
+3. Tools to generate protobuf (This will be installed globally)
+```
+npm install -g grpc-tools
+npm install -g protoc-gen-grpc-web
+```
+4. Generate protobuf for frontend
+```bash
+protoc -I=. chat.proto \
+  --js_out=import_style=commonjs:./client-web/src/grpc \
+  --grpc-web_out=import_style=commonjs,mode=grpcwebtext:./client-web/src/grpc --proto_path=./googleapis
 ```
 
 ## Other
