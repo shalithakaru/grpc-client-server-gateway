@@ -1,6 +1,6 @@
 # gRPC Client | Server | Gateway
 
-This project aims to provide hands-on experience with gRPC, Golang concurrency, and telemetry. The primary focus is on understanding the fundamentals of these technologies, their integration, and their practical applications in modern software development.
+This project aims to provide hands-on experience with basic gRPC, Golang concurrency, and telemetry. The primary focus is on understanding the fundamentals of these technologies, their integration, and their practical applications in modern software development.
 
 - [gRPC Client | Server | Gateway](#grpc-client--server--gateway)
   - [TODO](#todo)
@@ -25,6 +25,8 @@ This project aims to provide hands-on experience with gRPC, Golang concurrency, 
       - [Run client-web application](#run-client-web-application)
 
 ## TODO
+A list of tasks or features that need to be completed, serving as a checklist or roadmap for the project.
+
 -  Golang Concurrency
 -  OpenTelemetry Client SDKs and Collector
 -  Kubernetes Cluster
@@ -32,6 +34,7 @@ This project aims to provide hands-on experience with gRPC, Golang concurrency, 
 
 ## Features 
 ### gRPC
+Explains the implementation of both unary and streaming based [RPCs](https://book.systemsapproach.org/e2e/rpc.html).
   - `Unary RPC` - The client sends a single request to the server and gets a single response back,  similar to a traditional function call.
   - `Streaming RPC`: Allows for more complex interactions. There are three types:
     - `Server Streaming RPC`: The client sends a single request and receives a stream of responses.
@@ -39,12 +42,13 @@ This project aims to provide hands-on experience with gRPC, Golang concurrency, 
     - `Bidirectional Streaming RPC`: Both client and server send a stream of messages to each other.
 
 ### Golang Concurrency
+Highlights the use of goroutines, channels, and the select statement for concurrent programming.
   - `Goroutines`: Lightweight threads managed by the Go runtime, allowing for efficient concurrency.
   - `Channels`: Used for communication between goroutines, facilitating safe data exchange.
   - `Select Statement`: Enables waiting on multiple channel operations, helping in building concurrent and responsive applications.
 
 ### Frontend application in `React.js`
-  - This frontend application was implemented using React.js to demonstrate how frontend applications can use gPRC based services.
+This frontend application was implemented using React.js to demonstrate how frontend applications can use gPRC based services.
 
   Please note gRPC-web currently supports 2 RPC modes.
   - Unary RPCs
@@ -53,12 +57,13 @@ This project aims to provide hands-on experience with gRPC, Golang concurrency, 
   `Client-side` and `Bi-directional` streaming is not currently supported and you can see in the generated `chat_pb.js` and `chat_grpc_web_pb.j` there's no impelemntation for it even we try to generate it using `protoc`.
 
 ### OpenTelemetry with Traces, Logs, Metrics
-  OpenTelemetry: An observability framework for cloud-native software, providing instrumentation to collect telemetry data (traces, logs, metrics).
+  OpenTelemetry is an observability framework, providing instrumentation to collect telemetry data (traces, logs, metrics).
   - `Traces`: Provide insights into the request paths and performance of the application by tracing the flow through different services.
   - `Logs`: Capture application events and errors for debugging and monitoring.
   - `Metrics`: Quantitative data about the system's performance and health (e.g., request count, latency).
 
 ### Kubernetes Cluster
+Discusses the deployment and management of the application in a Kubernetes environment.
   - `Kubernetes`: An open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications.
   - `Monitoring and Logging`: Integrating Kubernetes with Prometheus and OpenTelemetry to monitor and log the application's performance and health.
 
