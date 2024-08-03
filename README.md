@@ -23,6 +23,7 @@ This project aims to provide hands-on experience with basic gRPC, Golang concurr
     - [Testing via frontend application](#testing-via-frontend-application)
       - [Prerequisite](#prerequisite-1)
       - [Run client-web application](#run-client-web-application)
+  - [References](#references)
 
 ## Roadmap
 A list of tasks or features that need to be completed, serving as a checklist or roadmap for the project.
@@ -164,3 +165,6 @@ cd client-web
 npm start
 ```
 
+## References
+1. gRPC Example https://tutorialedge.net/golang/go-grpc-beginners-tutorial/
+2. OpenTelemetry Collectors https://github.com/open-telemetry/opentelemetry-demo/blob/main/docker-compose.yml
