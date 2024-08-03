@@ -1,5 +1,7 @@
 # gRPC Client | Server | Gateway
 
+This project aims to provide hands-on experience with gRPC, Golang concurrency, and telemetry. The primary focus is on understanding the fundamentals of these technologies, their integration, and their practical applications in modern software development.
+
 - [gRPC Client | Server | Gateway](#grpc-client--server--gateway)
   - [Features](#features)
     - [gRPC (Unary and Streaming)](#grpc-unary-and-streaming)
@@ -24,9 +26,6 @@
     - [Testing via frontend application](#testing-via-frontend-application)
       - [Prerequisite](#prerequisite-1)
       - [Run client-web application](#run-client-web-application)
-
-
-This project aims to provide hands-on experience with gRPC, Golang concurrency, and telemetry. The primary focus is on understanding the fundamentals of these technologies, their integration, and their practical applications in modern software development.
 
 ## Features 
 ### gRPC (Unary and Streaming)
