@@ -1,54 +1,82 @@
 # gRPC Client | Server | Gateway
 
+- [gRPC Client | Server | Gateway](#grpc-client--server--gateway)
+  - [Features](#features)
+    - [gRPC (Unary and Streaming)](#grpc-unary-and-streaming)
+    - [Golang Concurrency (PENDING)](#golang-concurrency-pending)
+    - [Frontend application in `React.js`](#frontend-application-in-reactjs)
+    - [OpenTelemetry with Traces, Logs, Metrics (PENDING)](#opentelemetry-with-traces-logs-metrics-pending)
+    - [Kubernetes Cluster (PENDING)](#kubernetes-cluster-pending)
+  - [gRPC Server \& Gateway](#grpc-server--gateway)
+    - [Prerequisite](#prerequisite)
+      - [Install gRPC gateway and related components](#install-grpc-gateway-and-related-components)
+      - [Clone proto dependencies](#clone-proto-dependencies)
+      - [Generate protobuf files (already generated)](#generate-protobuf-files-already-generated)
+    - [Server](#server)
+      - [Run Server](#run-server)
+      - [Run Gateways for Server](#run-gateways-for-server)
+        - [gRPC Gateway HTTP/1.1](#grpc-gateway-http11)
+        - [HTTP Gateway HTTP/1.1](#http-gateway-http11)
+        - [gRPC Gateway HTTP/2](#grpc-gateway-http2)
+        - [HTTP Gateway HTTP/2](#http-gateway-http2)
+  - [gRPC Client](#grpc-client)
+    - [Testing via gateways or calling the server directly](#testing-via-gateways-or-calling-the-server-directly)
+    - [Testing via frontend application](#testing-via-frontend-application)
+      - [Prerequisite](#prerequisite-1)
+      - [Run client-web application](#run-client-web-application)
+
+
 This project aims to provide hands-on experience with gRPC, Golang concurrency, and telemetry. The primary focus is on understanding the fundamentals of these technologies, their integration, and their practical applications in modern software development.
 
 ## Features 
-1. gRPC (Unary and Streaming)
+### gRPC (Unary and Streaming)
     - `Unary RPC` - The client sends a single request to the server and gets a single response back,  similar to a traditional function call.
     - `Streaming RPC`: Allows for more complex interactions. There are three types:
 `Server Streaming RPC`: The client sends a single request and receives a stream of responses.
 `Client Streaming RPC`: The client sends a stream of requests and receives a single response.
 `Bidirectional Streaming RPC`: Both client and server send a stream of messages to each other.
 
-2. Golang Concurrency (PENDING)
+### Golang Concurrency (PENDING)
     - `Goroutines`: Lightweight threads managed by the Go runtime, allowing for efficient concurrency.
     - `Channels`: Used for communication between goroutines, facilitating safe data exchange.
     - `Select Statement`: Enables waiting on multiple channel operations, helping in building concurrent and responsive applications.
 
-3. Frontend application in `React.js`
-This frontend application were implemented using React.js to demonstrate how current frontend application can use gPRC based services
+### Frontend application in `React.js`
+    - This frontend application was implemented using React.js to demonstrate how frontend applications can use gPRC based services.
 
-Please note gRPC-web currently supports 2 RPC modes.
+    Please note gRPC-web currently supports 2 RPC modes.
     - Unary RPCs
-    - Server-side Streaming RPCs (example) (NOTE: Only when grpcwebtext mode is used.)
+    - Server-side Streaming RPCs (NOTE: Only when grpcwebtext mode is used.)
 
-`Client-side` and `Bi-directional` streaming is not currently supported and you can see in the generated `chat_pb.js` and `chat_grpc_web_pb.j` there's no impelemntation for it even we try to generate it using `protoc`.
+    `Client-side` and `Bi-directional` streaming is not currently supported and you can see in the generated `chat_pb.js` and `chat_grpc_web_pb.j` there's no impelemntation for it even we try to generate it using `protoc`.
 
-3. OpenTelemetry with Traces, Logs, Metrics (PENDING)
+### OpenTelemetry with Traces, Logs, Metrics (PENDING)
+    OpenTelemetry: An observability framework for cloud-native software, providing instrumentation to collect telemetry data (traces, logs, metrics).
+        - `Traces`: Provide insights into the request paths and performance of the application by tracing the flow through different services.
+        - `Logs`: Capture application events and errors for debugging and monitoring.
+        - `Metrics`: Quantitative data about the system's performance and health (e.g., request count, latency).
 
-OpenTelemetry: An observability framework for cloud-native software, providing instrumentation to collect telemetry data (traces, logs, metrics).
-    - `Traces`: Provide insights into the request paths and performance of the application by tracing the flow through different services.
-    - `Logs`: Capture application events and errors for debugging and monitoring.
-    - `Metrics`: Quantitative data about the system's performance and health (e.g., request count, latency).
-
-4. Kubernetes Cluster (PENDING)
+### Kubernetes Cluster (PENDING)
     - `Kubernetes`: An open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications.
     - `Monitoring and Logging`: Integrating Kubernetes with Prometheus and OpenTelemetry to monitor and log the application's performance and health.
 
-## Prerequisite 
 
-### Install gRPC gateway and OpenAPI v2 plugins
+## gRPC Server & Gateway
+
+### Prerequisite 
+
+#### Install gRPC gateway and related components
 ```bash
 go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
 go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
 ```
 
-### Clone proto dependencies
+#### Clone proto dependencies
 ```bash
 git clone https://github.com/googleapis/googleapis.git
 ```
 
-### Generate protobuf files (already generated)
+#### Generate protobuf files (already generated)
 ```bash
 protoc -I. --go_out=plugins=grpc:chat --go-grpc_out=chat --grpc-gateway_out=chat --proto_path=./ --proto_path=./googleapis chat.proto
 # or 
@@ -57,31 +85,31 @@ protoc -I. --go_out=chat --go-grpc_out=chat --grpc-gateway_out=chat --proto_path
 protoc -I. --go_out=chat --go_opt=paths=source_relative --go-grpc_out=chat --go-grpc_opt=paths=source_relative --grpc-gateway_out=chat --grpc-gateway_opt=logtostderr=true,paths=source_relative --proto_path=./ --proto_path=./googleapis chat.proto
 ```
 
-## Server
+### Server
 
-### Run Server
+#### Run Server
 Run the gRPC server.
 ```bash
 GOWORK=off go run server/*.go  
 ```
 
-### Run Gateways for Server
+#### Run Gateways for Server
 Below gateways were implemented to undestand and explain how gRPC acts under different protocols.
 TODO: Need to add interceptors to explain how HTTP gateways decode serialised requests and responses.
 
-#### gRPC Gateway HTTP/1.1
+##### gRPC Gateway HTTP/1.1
 Run the gRPC gateway that supports HTTP/1.1.
 ```bash
 GOWORK=off go run gateway/gateway-grpc-http1-1/*.go
 ``` 
 
-#### HTTP Gateway HTTP/1.1
+##### HTTP Gateway HTTP/1.1
 Run the HTTP gateway that supports HTTP/1.1.
 ```bash
 GOWORK=off go run gateway/gateway-http-http1-1/*.go
 ``` 
 
-#### gRPC Gateway HTTP/2
+##### gRPC Gateway HTTP/2
 Run the gRPC gateway that supports HTTP/2.
 ```bash
 GOWORK=off go run gateway/gateway-grpc-http2/*.go
@@ -93,7 +121,7 @@ Run the HTTP gateway that supports HTTP/2.
 GOWORK=off go run gateway/gateway-http-http2/*.go
 ``` 
 
-## Test
+## gRPC Client
 
 ### Testing via gateways or calling the server directly
 Test the service using the gateway with a curl command.
