@@ -29,35 +29,35 @@ This project aims to provide hands-on experience with gRPC, Golang concurrency, 
 
 ## Features 
 ### gRPC (Unary and Streaming)
-    - `Unary RPC` - The client sends a single request to the server and gets a single response back,  similar to a traditional function call.
-    - `Streaming RPC`: Allows for more complex interactions. There are three types:
-`Server Streaming RPC`: The client sends a single request and receives a stream of responses.
-`Client Streaming RPC`: The client sends a stream of requests and receives a single response.
-`Bidirectional Streaming RPC`: Both client and server send a stream of messages to each other.
+  - `Unary RPC` - The client sends a single request to the server and gets a single response back,  similar to a traditional function call.
+  - `Streaming RPC`: Allows for more complex interactions. There are three types:
+    - `Server Streaming RPC`: The client sends a single request and receives a stream of responses.
+    - `Client Streaming RPC`: The client sends a stream of requests and receives a single response.
+    - `Bidirectional Streaming RPC`: Both client and server send a stream of messages to each other.
 
 ### Golang Concurrency (PENDING)
-    - `Goroutines`: Lightweight threads managed by the Go runtime, allowing for efficient concurrency.
-    - `Channels`: Used for communication between goroutines, facilitating safe data exchange.
-    - `Select Statement`: Enables waiting on multiple channel operations, helping in building concurrent and responsive applications.
+  - `Goroutines`: Lightweight threads managed by the Go runtime, allowing for efficient concurrency.
+  - `Channels`: Used for communication between goroutines, facilitating safe data exchange.
+  - `Select Statement`: Enables waiting on multiple channel operations, helping in building concurrent and responsive applications.
 
 ### Frontend application in `React.js`
-    - This frontend application was implemented using React.js to demonstrate how frontend applications can use gPRC based services.
+  - This frontend application was implemented using React.js to demonstrate how frontend applications can use gPRC based services.
 
-    Please note gRPC-web currently supports 2 RPC modes.
-    - Unary RPCs
-    - Server-side Streaming RPCs (NOTE: Only when grpcwebtext mode is used.)
+  Please note gRPC-web currently supports 2 RPC modes.
+  - Unary RPCs
+  - Server-side Streaming RPCs (NOTE: Only when grpcwebtext mode is used.)
 
-    `Client-side` and `Bi-directional` streaming is not currently supported and you can see in the generated `chat_pb.js` and `chat_grpc_web_pb.j` there's no impelemntation for it even we try to generate it using `protoc`.
+  `Client-side` and `Bi-directional` streaming is not currently supported and you can see in the generated `chat_pb.js` and `chat_grpc_web_pb.j` there's no impelemntation for it even we try to generate it using `protoc`.
 
 ### OpenTelemetry with Traces, Logs, Metrics (PENDING)
-    OpenTelemetry: An observability framework for cloud-native software, providing instrumentation to collect telemetry data (traces, logs, metrics).
+  OpenTelemetry: An observability framework for cloud-native software, providing instrumentation to collect telemetry data (traces, logs, metrics).
         - `Traces`: Provide insights into the request paths and performance of the application by tracing the flow through different services.
         - `Logs`: Capture application events and errors for debugging and monitoring.
         - `Metrics`: Quantitative data about the system's performance and health (e.g., request count, latency).
 
 ### Kubernetes Cluster (PENDING)
-    - `Kubernetes`: An open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications.
-    - `Monitoring and Logging`: Integrating Kubernetes with Prometheus and OpenTelemetry to monitor and log the application's performance and health.
+  - `Kubernetes`: An open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications.
+  - `Monitoring and Logging`: Integrating Kubernetes with Prometheus and OpenTelemetry to monitor and log the application's performance and health.
 
 
 ## gRPC Server & Gateway
