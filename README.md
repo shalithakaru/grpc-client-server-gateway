@@ -17,10 +17,6 @@ This project aims to provide hands-on experience with gRPC, Golang concurrency, 
     - [Server](#server)
       - [Run Server](#run-server)
       - [Run Gateways for Server](#run-gateways-for-server)
-        - [gRPC Gateway HTTP/1.1](#grpc-gateway-http11)
-        - [HTTP Gateway HTTP/1.1](#http-gateway-http11)
-        - [gRPC Gateway HTTP/2](#grpc-gateway-http2)
-        - [HTTP Gateway HTTP/2](#http-gateway-http2)
   - [gRPC Client](#grpc-client)
     - [Testing via gateways or calling the server directly](#testing-via-gateways-or-calling-the-server-directly)
     - [Testing via frontend application](#testing-via-frontend-application)
@@ -51,9 +47,9 @@ This project aims to provide hands-on experience with gRPC, Golang concurrency, 
 
 ### OpenTelemetry with Traces, Logs, Metrics (PENDING)
   OpenTelemetry: An observability framework for cloud-native software, providing instrumentation to collect telemetry data (traces, logs, metrics).
-        - `Traces`: Provide insights into the request paths and performance of the application by tracing the flow through different services.
-        - `Logs`: Capture application events and errors for debugging and monitoring.
-        - `Metrics`: Quantitative data about the system's performance and health (e.g., request count, latency).
+  - `Traces`: Provide insights into the request paths and performance of the application by tracing the flow through different services.
+  - `Logs`: Capture application events and errors for debugging and monitoring.
+  - `Metrics`: Quantitative data about the system's performance and health (e.g., request count, latency).
 
 ### Kubernetes Cluster (PENDING)
   - `Kubernetes`: An open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications.
@@ -86,6 +82,8 @@ protoc -I. --go_out=chat --go_opt=paths=source_relative --go-grpc_out=chat --go-
 
 ### Server
 
+Please note if you are not using Golang workspaces you don't need `GOWORK=off`
+
 #### Run Server
 Run the gRPC server.
 ```bash
@@ -96,28 +94,11 @@ GOWORK=off go run server/*.go
 Below gateways were implemented to undestand and explain how gRPC acts under different protocols.
 TODO: Need to add interceptors to explain how HTTP gateways decode serialised requests and responses.
 
-##### gRPC Gateway HTTP/1.1
-Run the gRPC gateway that supports HTTP/1.1.
 ```bash
-GOWORK=off go run gateway/gateway-grpc-http1-1/*.go
-``` 
-
-##### HTTP Gateway HTTP/1.1
-Run the HTTP gateway that supports HTTP/1.1.
-```bash
-GOWORK=off go run gateway/gateway-http-http1-1/*.go
-``` 
-
-##### gRPC Gateway HTTP/2
-Run the gRPC gateway that supports HTTP/2.
-```bash
-GOWORK=off go run gateway/gateway-grpc-http2/*.go
-``` 
-
-##### HTTP Gateway HTTP/2
-Run the HTTP gateway that supports HTTP/2.
-```bash
-GOWORK=off go run gateway/gateway-http-http2/*.go
+GOWORK=off go run gateway/gateway-grpc-http1-1/*.go # Run the gRPC gateway that supports HTTP/1.1.
+GOWORK=off go run gateway/gateway-http-http1-1/*.go # Run the HTTP gateway that supports HTTP/1.1.
+GOWORK=off go run gateway/gateway-grpc-http2/*.go   # Run the gRPC gateway that supports HTTP/2.
+GOWORK=off go run gateway/gateway-http-http2/*.go   # Run the HTTP gateway that supports HTTP/2.
 ``` 
 
 ## gRPC Client
