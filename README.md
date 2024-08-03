@@ -28,6 +28,7 @@ This project aims to provide hands-on experience with gRPC, Golang concurrency, 
 -  Golang Concurrency
 -  OpenTelemetry Client SDKs and Collector
 -  Kubernetes Cluster
+-  Kubernetes Operator
 
 ## Features 
 ### gRPC
