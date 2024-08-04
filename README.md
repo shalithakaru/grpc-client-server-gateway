@@ -23,6 +23,7 @@ This project aims to provide hands-on experience with basic gRPC, Golang concurr
     - [Testing via frontend application](#testing-via-frontend-application)
       - [Prerequisite](#prerequisite-1)
       - [Run client-web application](#run-client-web-application)
+  - [Telemetry](#telemetry)
   - [References](#references)
 
 ## Roadmap
@@ -164,6 +165,9 @@ protoc -I=. chat.proto \
 cd client-web
 npm start
 ```
+
+## Telemetry
+Run `docker compose --env-file .env -f docker-compose.yaml up`
 
 ## References
 1. gRPC Example https://tutorialedge.net/golang/go-grpc-beginners-tutorial/
