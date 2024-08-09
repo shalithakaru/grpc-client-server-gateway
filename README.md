@@ -25,6 +25,7 @@ This project aims to provide hands-on experience with basic gRPC, Golang concurr
       - [Run client-web application](#run-client-web-application)
   - [Telemetry](#telemetry)
   - [References](#references)
+- [Temporary](#temporary)
 
 ## Roadmap
 A list of tasks or features that need to be completed, serving as a checklist or roadmap for the project.
@@ -172,3 +173,11 @@ Run `docker compose --env-file .env -f docker-compose.yaml up`
 ## References
 1. gRPC Example https://tutorialedge.net/golang/go-grpc-beginners-tutorial/
 2. OpenTelemetry Collectors https://github.com/open-telemetry/opentelemetry-demo/blob/main/docker-compose.yml
+
+
+# Temporary
+``` 
+curl --unix-socket /var/run/docker.sock http://localhost/containers/f9188e5bf83ae3fc04419071bc05dfaf6981a609f7d567d6d78409f89fcdc382/stats
+docker-compose up
+telemetrygen traces --otlp-insecure
+```
