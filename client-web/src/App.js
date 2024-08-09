@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { Message } from './grpc/chat_pb';
 import { ChatServiceClient } from './grpc/chat_grpc_web_pb';
