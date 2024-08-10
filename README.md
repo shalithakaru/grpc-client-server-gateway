@@ -176,6 +176,7 @@ Run `docker compose --env-file .env -f docker-compose.yaml up`
 
 
 # Temporary
+<!-- Please ignore below not part of this repo. My experiments-->
 ``` 
 curl --unix-socket /var/run/docker.sock http://localhost/containers/f9188e5bf83ae3fc04419071bc05dfaf6981a609f7d567d6d78409f89fcdc382/stats
 docker-compose up
@@ -183,7 +184,30 @@ telemetrygen traces --otlp-insecure
 brew install kubectl
 brew install minikube
 minikube start --kubernetes-version=v1.30.0
+minikube start --cpus 4 --memory 8192
 
 kubectl apply -f k.yaml      
 
+
+
+ArgoCD Setup
+kubectl create ns argocd
+kubectl apply -k ./argocd
+
+
+kubectl get all -n argocd
+
+Follow this https://apexlemons.com/devops/argocd-on-minikube-on-macos-apple-silicon-version-m1-m2/
+
+After port forwarding 
+
+k get secret argocd-initial-admin-secret -o yaml -n argocd
+echo MWdXOFFpV1NJVmVTSlg5Yw== | base64 --decode
+Password is 1gW8QiWSIVeSJX9c
+
+argocd login localhost:8080
+
+minikube addons enable ingress
+
 ```
+
