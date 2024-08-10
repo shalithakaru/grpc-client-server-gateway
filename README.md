@@ -25,7 +25,6 @@ This project aims to provide hands-on experience with basic gRPC, Golang concurr
       - [Run client-web application](#run-client-web-application)
   - [Telemetry](#telemetry)
   - [References](#references)
-- [Temporary](#temporary)
 
 ## Roadmap
 A list of tasks or features that need to be completed, serving as a checklist or roadmap for the project.
@@ -174,40 +173,4 @@ Run `docker compose --env-file .env -f docker-compose.yaml up`
 1. gRPC Example https://tutorialedge.net/golang/go-grpc-beginners-tutorial/
 2. OpenTelemetry Collectors https://github.com/open-telemetry/opentelemetry-demo/blob/main/docker-compose.yml
 
-
-# Temporary
-<!-- Please ignore below not part of this repo. My experiments-->
-``` 
-curl --unix-socket /var/run/docker.sock http://localhost/containers/f9188e5bf83ae3fc04419071bc05dfaf6981a609f7d567d6d78409f89fcdc382/stats
-docker-compose up
-telemetrygen traces --otlp-insecure
-brew install kubectl
-brew install minikube
-minikube start --kubernetes-version=v1.30.0
-minikube start --cpus 4 --memory 8192
-
-kubectl apply -f k.yaml      
-
-
-
-ArgoCD Setup
-kubectl create ns argocd
-kubectl apply -k ./argocd
-
-
-kubectl get all -n argocd
-
-Follow this https://apexlemons.com/devops/argocd-on-minikube-on-macos-apple-silicon-version-m1-m2/
-
-After port forwarding 
-
-k get secret argocd-initial-admin-secret -o yaml -n argocd
-echo MWdXOFFpV1NJVmVTSlg5Yw== | base64 --decode
-Password is 1gW8QiWSIVeSJX9c
-
-argocd login localhost:8080
-
-minikube addons enable ingress
-
-```
 
