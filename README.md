@@ -180,4 +180,10 @@ Run `docker compose --env-file .env -f docker-compose.yaml up`
 curl --unix-socket /var/run/docker.sock http://localhost/containers/f9188e5bf83ae3fc04419071bc05dfaf6981a609f7d567d6d78409f89fcdc382/stats
 docker-compose up
 telemetrygen traces --otlp-insecure
+brew install kubectl
+brew install minikube
+minikube start --kubernetes-version=v1.30.0
+
+kubectl apply -f k.yaml      
+
 ```

@@ -5,18 +5,18 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: otel-demo
+  name: poc
 ---
 # Source: opentelemetry-demo/charts/opensearch/templates/poddisruptionbudget.yaml
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: "otel-demo-opensearch-pdb"
+  name: "demo-opensearch-pdb"
   labels:
     app.kubernetes.io/name: opensearch
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/version: "2.15.0"
-    app.kubernetes.io/component: otel-demo-opensearch
+    app.kubernetes.io/component: demo-opensearch
 spec:
   maxUnavailable: 1
   selector:
@@ -34,7 +34,7 @@ metadata:
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/version: "11.1.0"
   name: opentelemetry-demo-grafana
-  namespace: otel-demo
+  namespace: poc
 ---
 # Source: opentelemetry-demo/charts/jaeger/templates/allinone-sa.yaml
 apiVersion: v1
@@ -53,7 +53,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: opentelemetry-demo-otelcol
-  namespace: otel-demo
+  namespace: poc
   labels:
     app.kubernetes.io/name: otelcol
     app.kubernetes.io/instance: opentelemetry-demo
@@ -70,7 +70,7 @@ metadata:
     app.kubernetes.io/version: v2.53.1
     app.kubernetes.io/part-of: prometheus
   name: opentelemetry-demo-prometheus-server
-  namespace: otel-demo
+  namespace: poc
   annotations:
     {}
 ---
@@ -92,7 +92,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: opentelemetry-demo-grafana
-  namespace: otel-demo
+  namespace: poc
   labels:
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: opentelemetry-demo
@@ -109,7 +109,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: opentelemetry-demo-grafana
-  namespace: otel-demo
+  namespace: poc
   labels:
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: opentelemetry-demo
@@ -174,7 +174,7 @@ data:
         version: 2.13.0
       name: OpenSearch
       type: grafana-opensearch-datasource
-      url: http://otel-demo-opensearch:9200/
+      url: http://demo-opensearch:9200/
   dashboardproviders.yaml: |
     apiVersion: 1
     providers:
@@ -191,12 +191,12 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: otel-demo-opensearch-config
+  name: demo-opensearch-config
   labels:
     app.kubernetes.io/name: opensearch
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/version: "2.15.0"
-    app.kubernetes.io/component: otel-demo-opensearch
+    app.kubernetes.io/component: demo-opensearch
 data:
   opensearch.yml: |
     cluster.name: opensearch-cluster
@@ -255,7 +255,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: opentelemetry-demo-otelcol
-  namespace: otel-demo
+  namespace: poc
   labels:
     app.kubernetes.io/name: otelcol
     app.kubernetes.io/instance: opentelemetry-demo
@@ -269,7 +269,7 @@ data:
       debug: {}
       opensearch:
         http:
-          endpoint: http://otel-demo-opensearch:9200
+          endpoint: http://demo-opensearch:9200
           tls:
             insecure: true
         logs_index: otel
@@ -419,7 +419,7 @@ metadata:
     app.kubernetes.io/version: v2.53.1
     app.kubernetes.io/part-of: prometheus
   name: opentelemetry-demo-prometheus-server
-  namespace: otel-demo
+  namespace: poc
 data:
   allow-snippet-annotations: "false"
   alerting_rules.yml: |
@@ -461,7 +461,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: opentelemetry-demo-flagd-config
-  namespace: otel-demo
+  namespace: poc
   labels:
     
     opentelemetry.io/name: opentelemetry-demo
@@ -583,7 +583,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: opentelemetry-demo-grafana-dashboards
-  namespace: otel-demo
+  namespace: poc
   labels:
     
     opentelemetry.io/name: opentelemetry-demo
@@ -8320,7 +8320,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: opentelemetry-demo-grafana
-    namespace: otel-demo
+    namespace: poc
 roleRef:
   kind: ClusterRole
   name: opentelemetry-demo-grafana-clusterrole
@@ -8343,7 +8343,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: opentelemetry-demo-otelcol
-  namespace: otel-demo
+  namespace: poc
 ---
 # Source: opentelemetry-demo/charts/prometheus/templates/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -8359,7 +8359,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: opentelemetry-demo-prometheus-server
-    namespace: otel-demo
+    namespace: poc
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -8370,7 +8370,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: opentelemetry-demo-grafana
-  namespace: otel-demo
+  namespace: poc
   labels:
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: opentelemetry-demo
@@ -8382,7 +8382,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: opentelemetry-demo-grafana
-  namespace: otel-demo
+  namespace: poc
   labels:
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: opentelemetry-demo
@@ -8394,25 +8394,26 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: opentelemetry-demo-grafana
-  namespace: otel-demo
+  namespace: poc
 ---
 # Source: opentelemetry-demo/charts/grafana/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: opentelemetry-demo-grafana
-  namespace: otel-demo
+  namespace: poc
   labels:
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/version: "11.1.0"
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     - name: service
       port: 80
       protocol: TCP
       targetPort: 3000
+      nodePort: 30000
   selector:
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: opentelemetry-demo
@@ -8519,12 +8520,12 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: otel-demo-opensearch
+  name: demo-opensearch
   labels:
     app.kubernetes.io/name: opensearch
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/version: "2.15.0"
-    app.kubernetes.io/component: otel-demo-opensearch
+    app.kubernetes.io/component: demo-opensearch
   annotations:
     {}
 spec:
@@ -8544,12 +8545,12 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: otel-demo-opensearch-headless
+  name: demo-opensearch-headless
   labels:
     app.kubernetes.io/name: opensearch
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/version: "2.15.0"
-    app.kubernetes.io/component: otel-demo-opensearch
+    app.kubernetes.io/component: demo-opensearch
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
 spec:
@@ -8572,7 +8573,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: opentelemetry-demo-otelcol
-  namespace: otel-demo
+  namespace: poc
   labels:
     app.kubernetes.io/name: otelcol
     app.kubernetes.io/instance: opentelemetry-demo
@@ -8580,7 +8581,7 @@ metadata:
     
     component: standalone-collector
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     
     - name: jaeger-compact
@@ -8604,10 +8605,12 @@ spec:
       targetPort: 4317
       protocol: TCP
       appProtocol: grpc
+      nodePort: 30017
     - name: otlp-http
       port: 4318
       targetPort: 4318
       protocol: TCP
+      nodePort: 30018
     - name: prometheus
       port: 9464
       targetPort: 9464
@@ -8633,19 +8636,20 @@ metadata:
     app.kubernetes.io/version: v2.53.1
     app.kubernetes.io/part-of: prometheus
   name: opentelemetry-demo-prometheus-server
-  namespace: otel-demo
+  namespace: poc
 spec:
   ports:
     - name: http
       port: 9090
       protocol: TCP
       targetPort: 9090
+      nodePort: 30090
   selector:
     app.kubernetes.io/component: server
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/instance: opentelemetry-demo
   sessionAffinity: None
-  type: "ClusterIP"
+  type: "NodePort"
 ---
 # Source: opentelemetry-demo/templates/component.yaml
 apiVersion: v1
@@ -8799,11 +8803,12 @@ metadata:
     app.kubernetes.io/version: "1.11.1"
     app.kubernetes.io/part-of: opentelemetry-demo
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     - port: 8080
       name: tcp-service
       targetPort: 8080
+      nodePort: 30001
   selector:
     
     opentelemetry.io/name: opentelemetry-demo-frontend
@@ -9046,7 +9051,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: opentelemetry-demo-grafana
-  namespace: otel-demo
+  namespace: poc
   labels:
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: opentelemetry-demo
@@ -9278,7 +9283,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: opentelemetry-demo-otelcol
-  namespace: otel-demo
+  namespace: poc
   labels:
     app.kubernetes.io/name: otelcol
     app.kubernetes.io/instance: opentelemetry-demo
@@ -9387,7 +9392,7 @@ metadata:
     app.kubernetes.io/version: v2.53.1
     app.kubernetes.io/part-of: prometheus
   name: opentelemetry-demo-prometheus-server
-  namespace: otel-demo
+  namespace: poc
 spec:
   selector:
     matchLabels:
@@ -10788,16 +10793,16 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: otel-demo-opensearch
+  name: demo-opensearch
   labels:
     app.kubernetes.io/name: opensearch
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/version: "2.15.0"
-    app.kubernetes.io/component: otel-demo-opensearch
+    app.kubernetes.io/component: demo-opensearch
   annotations:
     majorVersion: "2"
 spec:
-  serviceName: otel-demo-opensearch-headless
+  serviceName: demo-opensearch-headless
   selector:
     matchLabels:
       app.kubernetes.io/name: opensearch
@@ -10808,12 +10813,12 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      name: "otel-demo-opensearch"
+      name: "demo-opensearch"
       labels:
         app.kubernetes.io/name: opensearch
         app.kubernetes.io/instance: opentelemetry-demo
         app.kubernetes.io/version: "2.15.0"
-        app.kubernetes.io/component: otel-demo-opensearch
+        app.kubernetes.io/component: demo-opensearch
       annotations:
         configchecksum: 3b3e25ff4d35eda228b1cd06d8a76d454abc7356a87dc11224b077fa79a69e2
     spec:
@@ -10841,7 +10846,7 @@ spec:
       volumes:
       - name: config
         configMap:
-          name: otel-demo-opensearch-config
+          name: demo-opensearch-config
       - emptyDir: {}
         name: config-emptydir
       enableServiceLinks: true
@@ -10937,7 +10942,7 @@ metadata:
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/version: "11.1.0"
   name: opentelemetry-demo-grafana-test
-  namespace: otel-demo
+  namespace: poc
   annotations:
 ---
 # Source: opentelemetry-demo/charts/grafana/templates/tests/test-configmap.yaml
@@ -10945,7 +10950,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: opentelemetry-demo-grafana-test
-  namespace: otel-demo
+  namespace: poc
   annotations:
   labels:
     app.kubernetes.io/name: grafana
@@ -10970,7 +10975,7 @@ metadata:
     app.kubernetes.io/instance: opentelemetry-demo
     app.kubernetes.io/version: "11.1.0"
   annotations:
-  namespace: otel-demo
+  namespace: poc
 spec:
   serviceAccountName: opentelemetry-demo-grafana-test
   containers:
