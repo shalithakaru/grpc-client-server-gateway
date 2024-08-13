@@ -22,7 +22,7 @@ This project aims to provide hands-on experience with basic gRPC, Golang concurr
     - [Testing via frontend application](#testing-via-frontend-application)
       - [Prerequisite](#prerequisite-1)
       - [Run client-web application](#run-client-web-application)
-  - [Telemetry](#telemetry)
+  - [Run OpenTelemetry Collector and Observablity Components](#run-opentelemetry-collector-and-observablity-components)
   - [References](#references)
 
 ## Roadmap
@@ -156,7 +156,7 @@ cd client-web
 npm start
 ```
 
-## Telemetry
+## Run OpenTelemetry Collector and Observablity Components
 Run `docker compose --env-file .env -f docker-compose.yaml up`
 
 ## References
