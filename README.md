@@ -9,7 +9,6 @@ This project aims to provide hands-on experience with basic gRPC, Golang concurr
     - [Golang Concurrency](#golang-concurrency)
     - [Frontend application in `React.js`](#frontend-application-in-reactjs)
     - [OpenTelemetry with Traces, Logs, Metrics](#opentelemetry-with-traces-logs-metrics)
-    - [Kubernetes](#kubernetes)
   - [gRPC Server \& Gateway](#grpc-server--gateway)
     - [Prerequisite](#prerequisite)
       - [Install gRPC gateway and related components](#install-grpc-gateway-and-related-components)
@@ -31,8 +30,6 @@ A list of tasks or features that need to be completed, serving as a checklist or
 
 -  Golang Concurrency
 -  OpenTelemetry Client SDKs and Collector
--  Kubernetes Cluster
--  Kubernetes Operator
 
 ## Features 
 ### gRPC
@@ -63,13 +60,6 @@ This frontend application was implemented using React.js to demonstrate how fron
   - `Traces`: Provide insights into the request paths and performance of the application by tracing the flow through different services.
   - `Logs`: Capture application events and errors for debugging and monitoring.
   - `Metrics`: Quantitative data about the system's performance and health (e.g., request count, latency).
-
-### Kubernetes
-Discusses the deployment and management of the application in a Kubernetes environment.
-  - `Kubernetes`: An open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications.
-  - `Monitoring and Logging`: Integrating Kubernetes with Prometheus and OpenTelemetry to monitor and log the application's performance and health.
-  - `Operator`: Details the implementation of a Kubernetes Operator to manage custom resources.
-
 
 ## gRPC Server & Gateway
 
