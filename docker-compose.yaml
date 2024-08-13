@@ -66,7 +66,7 @@ services:
         limits:
           memory: 200M
     restart: unless-stopped
-    command: [ "--config=/etc/otelcol-config.yml", "--config=/etc/otelcol-config-extras.yml", "--feature-gates=-component.UseLocalHostAsDefaultHost" ]
+    command: [ "--config=/etc/otelcol-config.yml", "--feature-gates=-component.UseLocalHostAsDefaultHost" ]
     user: 0:0
     volumes:
       - ${OTEL_COLLECTOR_CONFIG}:/etc/otelcol-config.yml
